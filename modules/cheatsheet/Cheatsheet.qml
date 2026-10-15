@@ -18,7 +18,7 @@ Overlay {
 
     readonly property string q: filter.text.trim().toLowerCase()
     readonly property var sections: {
-        const extra = Keybinds.unbound.length > 0 ? [{ name: "Prism — not bound yet", binds: Keybinds.unbound.map(p => ({ keys: ["qs ipc call " + p.ipc], desc: p.desc })) }] : [];
+        const extra = Keybinds.unbound.length > 0 ? [{ name: "Prism — not bound yet", binds: Keybinds.unbound.map(p => ({ keys: ["prism " + p.ipc], desc: p.desc })) }] : [];
         const all = Keybinds.sections.concat(extra);
         if (q === "")
             return all;

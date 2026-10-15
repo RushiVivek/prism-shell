@@ -4,7 +4,7 @@ import Quickshell.Io
 import qs.common
 import qs.services
 
-// `qs ipc call <target> <function> [args]` — see README.md for the full list.
+// `prism <target> <function> [args]` — see README.md for the full list.
 Scope {
     IpcHandler {
         target: "launcher"
@@ -99,7 +99,7 @@ Scope {
         function tab(name: string): void {
             Chrono.show(name);
         }
-        // start a timer, e.g. `qs ipc call clock timer 25`
+        // start a timer, e.g. `prism clock timer 25`
         function timer(minutes: int): void {
             Chrono.timer(minutes);
             Osd.show("toggle", "timer_sand", "Timer · " + minutes + " min", -1);

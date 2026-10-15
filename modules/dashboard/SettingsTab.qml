@@ -457,7 +457,7 @@ Item {
                     SettingRow {
                         icon: "lock"
                         title: "Prism lock screen"
-                        sub: "Use the Quickshell lock for `qs ipc call lock lock` instead of hyprlock. Preview it first."
+                        sub: "Use the Quickshell lock for `prism lock lock` instead of hyprlock. Preview it first."
                         checked: Config.lock.enabled
                         accentIndex: 5
                         onToggled: v => Config.lock.enabled = v

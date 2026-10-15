@@ -93,13 +93,13 @@ palette cross-fades instead of snapping.
 Log in on the console and run:
 
 ```sh
-bash <(curl -fsSL https://raw.githubusercontent.com/CHANGE_ME/prism/main/install.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/RushiVivek/prism-shell/main/install.sh)
 ```
 
 Or clone it first:
 
 ```sh
-git clone https://github.com/CHANGE_ME/prism ~/.config/quickshell
+git clone https://github.com/RushiVivek/prism-shell ~/.config/quickshell
 ~/.config/quickshell/install.sh
 ```
 
@@ -184,7 +184,7 @@ before:
 | `SUPER + drag` (left button / right button) | Move / resize |
 | 3-finger swipe | Switch workspace |
 
-Every Prism action is also a command, for example `qs ipc call dashboard toggle`.
+Every Prism action is also a command, for example `prism dashboard toggle`.
 [action_commands.md](action_commands.md) lists them all.
 
 ## Configuration
@@ -229,7 +229,7 @@ Prism dispatches through Hyprland's Lua API (`hl.dsp.*`), so it needs Hyprland 0
 
 ```sh
 cd ~/.config/quickshell && git pull && ./install.sh   # update; keeps config.json, palette and your edits
-~/.config/quickshell/install.sh --uninstall            # take Prism back out
+~/.config/quickshell/install.sh --uninstall           # take Prism back out
 ```
 
 ## Troubleshooting

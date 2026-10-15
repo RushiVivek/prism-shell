@@ -14,51 +14,51 @@ end
 -- volume / brightness / media go through Prism (shows the OSD); if the shell
 -- isn't running they fall back to the plain tools so the keys always work
 local function osd(ipc, fallback)
-    return hl.dsp.exec_cmd("qs ipc call " .. ipc .. " || " .. fallback)
+    return hl.dsp.exec_cmd("prism " .. ipc .. " || " .. fallback)
 end
 
 ---- PANELS ----
-bind(mainMod .. " + S",                hl.dsp.exec_cmd("qs ipc call launcher toggle"))
-bind(mainMod .. " + escape",           hl.dsp.exec_cmd("qs ipc call dashboard toggle"))
-bind(mainMod .. " + SHIFT + escape",   hl.dsp.exec_cmd("qs ipc call controls toggle"))
-bind(mainMod .. " + N",                hl.dsp.exec_cmd("qs ipc call sidebar toggle"))
-bind(mainMod .. " + O",                hl.dsp.exec_cmd("qs ipc call overview toggle"))
-bind(mainMod .. " + SHIFT + TAB",      hl.dsp.exec_cmd("qs ipc call switcher toggle"))
-bind(mainMod .. " + M",                hl.dsp.exec_cmd("qs ipc call power toggle"))
-bind(mainMod .. " + slash",            hl.dsp.exec_cmd("qs ipc call cheatsheet toggle"))
-bind(mainMod .. " + SHIFT + Q",        hl.dsp.exec_cmd("qs ipc call edit toggle"))
+bind(mainMod .. " + S",                hl.dsp.exec_cmd("prism launcher toggle"))
+bind(mainMod .. " + escape",           hl.dsp.exec_cmd("prism dashboard toggle"))
+bind(mainMod .. " + SHIFT + escape",   hl.dsp.exec_cmd("prism controls toggle"))
+bind(mainMod .. " + N",                hl.dsp.exec_cmd("prism sidebar toggle"))
+bind(mainMod .. " + O",                hl.dsp.exec_cmd("prism overview toggle"))
+bind(mainMod .. " + SHIFT + TAB",      hl.dsp.exec_cmd("prism switcher toggle"))
+bind(mainMod .. " + M",                hl.dsp.exec_cmd("prism power toggle"))
+bind(mainMod .. " + slash",            hl.dsp.exec_cmd("prism cheatsheet toggle"))
+bind(mainMod .. " + SHIFT + Q",        hl.dsp.exec_cmd("prism edit toggle"))
 
 ---- PICKERS ----
-bind(mainMod .. " + V",                hl.dsp.exec_cmd("qs ipc call clipboard toggle"))
-bind(mainMod .. " + period",           hl.dsp.exec_cmd("qs ipc call emoji toggle"))
-bind(mainMod .. " + W",                hl.dsp.exec_cmd("qs ipc call wallpaper toggle"))
-bind(mainMod .. " + SHIFT + W",        hl.dsp.exec_cmd("qs ipc call wallpaper random"))
+bind(mainMod .. " + V",                hl.dsp.exec_cmd("prism clipboard toggle"))
+bind(mainMod .. " + period",           hl.dsp.exec_cmd("prism emoji toggle"))
+bind(mainMod .. " + W",                hl.dsp.exec_cmd("prism wallpaper toggle"))
+bind(mainMod .. " + SHIFT + W",        hl.dsp.exec_cmd("prism wallpaper random"))
 
 ---- CAPTURE ----
-bind("Print",                          hl.dsp.exec_cmd("qs ipc call screenshot menu"))
-bind(mainMod .. " + ALT + P",          hl.dsp.exec_cmd("qs ipc call screenshot menu"))
-bind("SHIFT + Print",                  hl.dsp.exec_cmd("qs ipc call screenshot region"))
-bind("CTRL + Print",                   hl.dsp.exec_cmd("qs ipc call screenshot full"))
-bind("ALT + Print",                    hl.dsp.exec_cmd("qs ipc call screenshot window"))
-bind(mainMod .. " + ALT + R",          hl.dsp.exec_cmd("qs ipc call record menu"))
-bind(mainMod .. " + SHIFT + ALT + R",  hl.dsp.exec_cmd("qs ipc call record stop"))
+bind("Print",                          hl.dsp.exec_cmd("prism screenshot menu"))
+bind(mainMod .. " + ALT + P",          hl.dsp.exec_cmd("prism screenshot menu"))
+bind("SHIFT + Print",                  hl.dsp.exec_cmd("prism screenshot region"))
+bind("CTRL + Print",                   hl.dsp.exec_cmd("prism screenshot full"))
+bind("ALT + Print",                    hl.dsp.exec_cmd("prism screenshot window"))
+bind(mainMod .. " + ALT + R",          hl.dsp.exec_cmd("prism record menu"))
+bind(mainMod .. " + SHIFT + ALT + R",  hl.dsp.exec_cmd("prism record stop"))
 
 ---- TOGGLES ----
-bind(mainMod .. " + ALT + T",          hl.dsp.exec_cmd("qs ipc call theme toggle"))
-bind(mainMod .. " + ALT + F",          hl.dsp.exec_cmd("qs ipc call focus toggle"))
-bind(mainMod .. " + ALT + K",          hl.dsp.exec_cmd("qs ipc call clock toggle"))
-bind(mainMod .. " + ALT + N",          hl.dsp.exec_cmd("qs ipc call toggle dnd"))
-bind(mainMod .. " + CTRL + N",         hl.dsp.exec_cmd("qs ipc call notify clear"))
-bind(mainMod .. " + ALT + C",          hl.dsp.exec_cmd("qs ipc call toggle caffeine"))
-bind(mainMod .. " + ALT + G",          hl.dsp.exec_cmd("qs ipc call toggle gamemode"))
-bind(mainMod .. " + ALT + E",          hl.dsp.exec_cmd("qs ipc call toggle easyeffects"))
+bind(mainMod .. " + ALT + T",          hl.dsp.exec_cmd("prism theme toggle"))
+bind(mainMod .. " + ALT + F",          hl.dsp.exec_cmd("prism focus toggle"))
+bind(mainMod .. " + ALT + K",          hl.dsp.exec_cmd("prism clock toggle"))
+bind(mainMod .. " + ALT + N",          hl.dsp.exec_cmd("prism toggle dnd"))
+bind(mainMod .. " + CTRL + N",         hl.dsp.exec_cmd("prism notify clear"))
+bind(mainMod .. " + ALT + C",          hl.dsp.exec_cmd("prism toggle caffeine"))
+bind(mainMod .. " + ALT + G",          hl.dsp.exec_cmd("prism toggle gamemode"))
+bind(mainMod .. " + ALT + E",          hl.dsp.exec_cmd("prism toggle easyeffects"))
 
 ---- MINIMIZE ----
 bind(mainMod .. " + ALT + Space",      hl.dsp.window.move({ workspace = "special:minimize", follow = false }))
 bind(mainMod .. " + SHIFT + Space",    hl.dsp.workspace.toggle_special("minimize"))
 
 ---- SESSION ----
-bind(mainMod .. " + L",                hl.dsp.exec_cmd("qs ipc call lock lock"))
+bind(mainMod .. " + L",                hl.dsp.exec_cmd("prism lock lock"))
 
 ---- MEDIA KEYS ----
 bind("XF86AudioRaiseVolume",  osd("osd volumeUp", "wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+"), { locked = true, repeating = true })

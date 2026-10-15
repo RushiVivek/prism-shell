@@ -60,7 +60,7 @@ Singleton {
                 property string files: "thunar"
                 property string editor: "code"
                 property string searchUrl: "https://www.google.com/search?q="
-                // folders in the quick-edit menu (qs ipc call edit toggle), opened with `editor <path>`
+                // folders in the quick-edit menu (prism edit toggle), opened with `editor <path>`
                 property list<string> editFolders: [
                     root.home + "/.config/hypr",
                     root.home + "/.config/quickshell"
@@ -137,7 +137,7 @@ Singleton {
             }
 
             property JsonObject lock: JsonObject {
-                // use the Quickshell lock screen for `qs ipc call lock lock`
+                // use the Quickshell lock screen for `prism lock lock`
                 property bool enabled: false
                 property string pamConfig: "hyprlock"
             }

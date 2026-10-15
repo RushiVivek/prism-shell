@@ -35,38 +35,38 @@ Singleton {
 
     // plain-language names for common commands / dispatchers (first match wins)
     readonly property var friendly: [
-        [/qs ipc call launcher toggle/, "Prism · app launcher"],
-        [/qs ipc call emoji/, "Prism · emoji picker"],
-        [/qs ipc call clipboard/, "Prism · clipboard history"],
-        [/qs ipc call sidebar/, "Prism · notification center"],
-        [/qs ipc call controls/, "Prism · control drawer"],
-        [/qs ipc call cheatsheet/, "Prism · this cheatsheet"],
-        [/qs ipc call wallpaper random/, "Prism · random wallpaper"],
-        [/qs ipc call wallpaper/, "Prism · wallpaper picker"],
-        [/qs ipc call power/, "Prism · power menu"],
-        [/qs ipc call dashboard/, "Prism · dashboard"],
-        [/qs ipc call overview/, "Prism · workspace overview"],
-        [/qs ipc call screenshot region/, "Prism · screenshot a region"],
-        [/qs ipc call screenshot window/, "Prism · screenshot a window"],
-        [/qs ipc call screenshot full/, "Prism · screenshot the screen"],
-        [/qs ipc call screenshot/, "Prism · screenshot menu"],
-        [/qs ipc call record stop/, "Prism · stop recording"],
-        [/qs ipc call record/, "Prism · screen recording"],
-        [/qs ipc call lock/, "Prism · lock screen"],
-        [/qs ipc call edit/, "Prism · quick edit folders"],
-        [/qs ipc call switcher/, "Prism · window switcher"],
-        [/qs ipc call focus/, "Prism · focus timer"],
-        [/qs ipc call clock/, "Prism · clock, timer, alarms"],
-        [/qs ipc call theme/, "Prism · light / dark theme"],
-        [/qs ipc call toggle dnd/, "Prism · do not disturb"],
-        [/qs ipc call toggle caffeine/, "Prism · caffeine (stay awake)"],
-        [/qs ipc call toggle gamemode/, "Prism · game mode"],
-        [/qs ipc call toggle easyeffects/, "Prism · EasyEffects on / off"],
-        [/qs ipc call notify clear/, "Prism · clear notifications"],
-        [/qs ipc call osd volumeUp|set-sink-volume.*\+|volume\.sh up/, "Volume up"],
-        [/qs ipc call osd volumeDown|set-sink-volume.*-\d|volume\.sh down/, "Volume down"],
-        [/qs ipc call osd micMute|DEFAULT_AUDIO_SOURCE@ toggle/, "Mute microphone"],
-        [/qs ipc call osd mute|set-sink-mute|volume\.sh mute/, "Mute"],
+        [/prism launcher toggle/, "Prism · app launcher"],
+        [/prism emoji/, "Prism · emoji picker"],
+        [/prism clipboard/, "Prism · clipboard history"],
+        [/prism sidebar/, "Prism · notification center"],
+        [/prism controls/, "Prism · control drawer"],
+        [/prism cheatsheet/, "Prism · this cheatsheet"],
+        [/prism wallpaper random/, "Prism · random wallpaper"],
+        [/prism wallpaper/, "Prism · wallpaper picker"],
+        [/prism power/, "Prism · power menu"],
+        [/prism dashboard/, "Prism · dashboard"],
+        [/prism overview/, "Prism · workspace overview"],
+        [/prism screenshot region/, "Prism · screenshot a region"],
+        [/prism screenshot window/, "Prism · screenshot a window"],
+        [/prism screenshot full/, "Prism · screenshot the screen"],
+        [/prism screenshot/, "Prism · screenshot menu"],
+        [/prism record stop/, "Prism · stop recording"],
+        [/prism record/, "Prism · screen recording"],
+        [/prism lock/, "Prism · lock screen"],
+        [/prism edit/, "Prism · quick edit folders"],
+        [/prism switcher/, "Prism · window switcher"],
+        [/prism focus/, "Prism · focus timer"],
+        [/prism clock/, "Prism · clock, timer, alarms"],
+        [/prism theme/, "Prism · light / dark theme"],
+        [/prism toggle dnd/, "Prism · do not disturb"],
+        [/prism toggle caffeine/, "Prism · caffeine (stay awake)"],
+        [/prism toggle gamemode/, "Prism · game mode"],
+        [/prism toggle easyeffects/, "Prism · EasyEffects on / off"],
+        [/prism notify clear/, "Prism · clear notifications"],
+        [/prism osd volumeUp|set-sink-volume.*\+|volume\.sh up/, "Volume up"],
+        [/prism osd volumeDown|set-sink-volume.*-\d|volume\.sh down/, "Volume down"],
+        [/prism osd micMute|DEFAULT_AUDIO_SOURCE@ toggle/, "Mute microphone"],
+        [/prism osd mute|set-sink-mute|volume\.sh mute/, "Mute"],
         [/brightness\.sh up|brightnessUp/, "Brightness up"],
         [/brightness\.sh down|brightnessDown/, "Brightness down"],
         [/playerctl next|media next/, "Next track"],
@@ -156,7 +156,7 @@ Singleton {
             return "Run " + vars[m[1]];
         if ((m = action.match(/exec_cmd\("((?:[^"\\]|\\.)*)"/))) {
             let c = m[1].replace(/\\"/g, "\"");
-            const ipc = c.match(/qs ipc call (\w+) (\w+)/);
+            const ipc = c.match(/prism (\w+) (\w+)/);
             if (ipc)
                 return "Prism · " + ipc[1] + " " + ipc[2];
             c = c.replace(/pkill \w+;\s*/g, "").replace(/^~\//, "");
@@ -231,14 +231,14 @@ Singleton {
                 continue;
             const om = bm[2].match(/^osd\("([^"]+)"/);
             if (om)
-                bm[2] = 'hl.dsp.exec_cmd("qs ipc call ' + om[1] + '")';
+                bm[2] = 'hl.dsp.exec_cmd("prism ' + om[1] + '")';
             const action = bm[2].startsWith("function") ? "function " + (text.slice(text.indexOf(raw)).split("end)")[0]) : bm[2];
             cur.binds.push({ keys: keysOf(bm[1], vars, loop), desc: describe(action, vars, loop) });
         }
         if (cur.binds.length > 0)
             out.push(cur);
         sections = out;
-        boundIpc = (text.match(/qs ipc call \w+ \w+/g) ?? []).map(x => x.replace("qs ipc call ", ""));
+        boundIpc = (text.match(/prism \w+ \w+/g) ?? []).map(x => x.replace("prism ", ""));
     }
 
     FileView {

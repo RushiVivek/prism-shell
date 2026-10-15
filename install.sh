@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # Prism — one-shot installer: bare Arch  ->  Hyprland + the Prism Quickshell desktop.
 #
-#   bash <(curl -fsSL https://raw.githubusercontent.com/CHANGE_ME/prism/main/install.sh)
+#   bash <(curl -fsSL https://raw.githubusercontent.com/RushiVivek/prism-shell/main/install.sh)
 #   # or
-#   git clone https://github.com/CHANGE_ME/prism ~/.config/quickshell && ~/.config/quickshell/install.sh
+#   git clone https://github.com/RushiVivek/prism-shell.git ~/.config/quickshell && ~/.config/quickshell/install.sh
 #
 # Made for a fresh Arch install with no desktop yet, but safe on an existing setup
 # (anything it changes is backed up, and every edit to your files sits between
@@ -27,9 +27,10 @@
 
 set -uo pipefail
 
-PRISM_REPO="${PRISM_REPO:-https://github.com/CHANGE_ME/prism.git}"
+PRISM_REPO="${PRISM_REPO:-https://github.com/RushiVivek/prism-shell.git}"
 CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
-DEST="$CONFIG_HOME/quickshell"
+DEST="$CONFIG_HOME/quickshell/prism-shell"
+PRISM_PATH="${PRISM_PATH:-${XDG_BIN_HOME:-$HOME/.local/bin}/prism}"
 HYPR_DIR="$CONFIG_HOME/hypr"
 HYPR_LUA="$HYPR_DIR/hyprland.lua"
 MATUGEN_CONF="$CONFIG_HOME/matugen/config.toml"
@@ -275,12 +276,16 @@ uninstall() {
     fi
 
     if pidof quickshell >/dev/null; then
-        run pkill -x quickshell
+        run quickshell -p "$DEST" kill
         ok "stopped Quickshell"
     fi
     if [[ -d $DEST ]]; then
         run mv -- "$DEST" "$DEST.removed-$STAMP"
         ok "moved the shell to $(tilde "$DEST.removed-$STAMP")"
+    fi
+    if [[ -f $PRISM_PATH ]]; then
+        run rm -- $PRISM_PATH
+        ok "Removed prism from PATH"
     fi
     local last
     last=$(ls -1d "$DEST".bak-* 2>/dev/null | sort | tail -n1)
@@ -515,7 +520,6 @@ SRC=""
 [[ -n $SELF && -f $(dirname "$SELF")/shell.qml ]] && SRC=$(dirname "$SELF")
 
 if [[ -z $SRC ]]; then
-    [[ $PRISM_REPO == *CHANGE_ME* ]] && die "PRISM_REPO isn't set — clone the repo and run ./install.sh from it."
     have git || die "git is needed to download Prism (sudo pacman -S git)"
     TMP=$(mktemp -d)
     info "downloading $PRISM_REPO"
@@ -537,6 +541,14 @@ copy_shell() {
     (cd "$SRC" && tar --exclude=./.cache --exclude=./.state --exclude=./config.json -cf - .) | (cd "$DEST" && tar -xf -) ||
         die "copying files failed"
 }
+
+write_file "$PRISM_PATH" <<EOF
+#!/bin/sh
+
+exec quickshell -p "$DEST" ipc call "\$@"
+EOF
+
+run chmod +x "$PRISM_PATH" 2>/dev/null
 
 if [[ -d $DEST && $(readlink -f "$DEST") == "$(readlink -f "$SRC")" ]]; then
     ok "running from $(tilde "$DEST") — files are already in place"
@@ -563,7 +575,7 @@ NAME=${NAME%% *}
 [[ -z $NAME ]] && NAME=${USER^}
 TERMINAL=$(first_of kitty foot alacritty wezterm ghostty konsole gnome-terminal)
 TERMINAL=${TERMINAL:-kitty}
-FILES=$(first_of thunar nautilus dolphin nemo pcmanfm-qt pcmanfm)
+FILES=$(first_of yazi thunar nautilus dolphin nemo pcmanfm-qt pcmanfm)
 FILES=${FILES:-thunar}
 EDITOR_APP=$(first_of code codium code-oss zeditor zed subl kate gnome-text-editor mousepad)
 EDITOR_APP=${EDITOR_APP:-xdg-open}
@@ -949,8 +961,8 @@ if ((DO_START && IN_HYPR)); then
         ((DO_HYPR)) && run hyprctl reload >/dev/null
         pgrep -f 'wl-paste --type text --watch' >/dev/null || run setsid -f wl-paste --type text --watch cliphist store
         pgrep -f 'wl-paste --type image --watch' >/dev/null || run setsid -f wl-paste --type image --watch cliphist store
-        pidof quickshell >/dev/null && run pkill -x quickshell && { ((DRY)) || sleep 0.5; }
-        run setsid -f quickshell >/dev/null 2>&1
+        pidof quickshell >/dev/null && quickshell -p "$DEST" kill && { ((DRY)) || sleep 0.5; }
+        run setsid -f quickshell -n -p "$DEST" >/dev/null 2>&1
         ok "Prism is running"
     fi
 fi
@@ -975,7 +987,7 @@ cat <<EOF
     Prism keys    $(tilde "$DEST")/hypr/prism-binds.lua
     commands      $(tilde "$DEST")/action_commands.md
     update        cd $(tilde "$DEST") && git pull && ./install.sh
-    undo          $(tilde "$DEST")/install.sh --uninstall
+    uninstall     $(tilde "$DEST")/install.sh --uninstall
     log           $(tilde "$LOG")
 
 EOF
